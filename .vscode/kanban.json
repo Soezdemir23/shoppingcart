@@ -1,0 +1,43 @@
+{
+    "title": "Kanban",
+    "cols": [
+        {
+            "title": "Out of Scopt",
+            "tasks": [],
+            "id": "clavlmihd000a3r63ws5spaba",
+            "color": "#eb144c"
+        },
+        {
+            "title": "Bugs",
+            "tasks": [],
+            "id": "clawe7kda000f3r63o62nmbkh",
+            "color": "var(--vscode-editor-foreground)"
+        },
+        {
+            "title": "To-Do",
+            "tasks": [
+                {
+                    "text": "#Set up Component and folder structure.\n\n##What functionalities does a shopping cart need?\n+ first be able to show the products you chose\n+ keep the looks even if the user chooses other links to products.\n+ increase the amount of objects\n+ remove the products\n+ either show up from the left side or show it as a popup\n\n",
+                    "id": "clavlmihd000b3r63kjh33xvz"
+                }
+            ],
+            "id": "clavlmihd000c3r63nvlawoo9",
+            "color": "#fcb900"
+        },
+        {
+            "title": "Doing",
+            "tasks": [],
+            "id": "clavlmihd000d3r63ggppes4f",
+            "color": "#0693e3"
+        },
+        {
+            "title": "Done",
+            "tasks": [],
+            "id": "clavlmihd000e3r633kk3fisv",
+            "color": "#00d084"
+        }
+    ],
+    "autosave": true,
+    "saveToFile": true,
+    "timestamp": 1669374071064
+}
