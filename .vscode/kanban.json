@@ -17,6 +17,10 @@
             "title": "To-Do",
             "tasks": [
                 {
+                    "text": "If no good API comes along, scrape or create your own data for the project",
+                    "id": "claweand3000g3r631zvxfluv"
+                },
+                {
                     "text": "#Set up Component and folder structure.\n\n##What functionalities does a shopping cart need?\n+ first be able to show the products you chose\n+ keep the looks even if the user chooses other links to products.\n+ increase the amount of objects\n+ remove the products\n+ either show up from the left side or show it as a popup\n\n",
                     "id": "clavlmihd000b3r63kjh33xvz"
                 }
@@ -39,5 +43,5 @@
     ],
     "autosave": true,
     "saveToFile": true,
-    "timestamp": 1669374071064
+    "timestamp": 1669374230978
 }
