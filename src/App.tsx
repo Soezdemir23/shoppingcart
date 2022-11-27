@@ -3,24 +3,25 @@ import logo from "./logo.svg";
 import "./App.css";
 import { consumerKey } from "./env";
 import { Event } from "./eventsInterface";
-function App() {
-  const [events, setEvents] = useState<Event[]| null>(null)
-  useEffect(() => {
-    
-    fetch("https://app.ticketmaster.com/discovery/v2/events.json?apikey="+consumerKey, { mode: "cors" })
-      .then(result => result.json())
-      .then(content => setEvents(content._embedded.events))
-  },[])
-  return (<div>
-    <ul>
-      {events === null ? "<li>No events found</li>" :events.map((party) => (
-        <li key={party.id}>
-          {party.name}
-        </li>
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import HomePage from "./HomePage";
+import Product from "./Product";
+import ShoppingPage from "./ShoppingPage";
 
-      ))}
-    </ul>
-  </div>);
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        {/*Homepage, where the stuff is being presented*/}
+        <Route path="/" element={<HomePage />} />
+        {/*Page for items. Try to make a switch out of it.*/}
+        <Route path="/product" element={<Product />} />
+        {/*shopping thing */}
+        <Route path="/shoppingpage" element={<ShoppingPage />} />
+        {/*Thank people for buying the stuff */}
+      </Routes>
+    </BrowserRouter>
+  )
 }
 
 export default App;
