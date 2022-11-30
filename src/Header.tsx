@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 /* the header is to be divided into two ways:
  * Big:
@@ -20,30 +20,47 @@ import { Link } from "react-router-dom";
  *  + Give it dummy links or remove some features.
  */
 export default function Header() {
-  const [drawer, setDrawer] = useState(false)
-  let drawerClasses = "";
-  const drawerToggle = () => {
-    setDrawer(!drawer)
-
-  }
+  const [drawer, setDrawer] = useState(false);
+  const drawerRef = useRef("hidden");
+  //I do not know yet how the state will influence the
+  // rendering yet
+  const drawerToggle = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
+    setDrawer(!drawer);
+    if (drawer === false) {
+      drawerRef.current= "hidden"
+    } else {
+      drawerRef.current = ""
+    }
+  };
+  
   return (
     <header className="bg-blue-500 flex">
       {/*on click toggle the view of the drawer*/}
-      <button onClick={drawerToggle} className="bg-blue-700 px-2 text-white text-lg hover:bg-blue-200 hover:text-black">
-        |||
-      </button>
-      <h1 className="text-7xl font-jelee">TicketMaster</h1>
-      <nav className={"relative"}>
-        <h5>Menu</h5>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
+      <div className="flex content-evenly gap-14">
+        <button
+          onClick={drawerToggle}
+          className="h-10 bg-blue-700 px-3 text-white text-lg hover:bg-blue-200 hover:text-black"
+        >
+          |||
+        </button>
+        <h1 className="text-4xl font-sans text-gray-200">
+          Ticket<span className="text-gray-300">M</span>aster
+        </h1>
+      </div>
+      {/* unhide this after you manage to finish the header */}
+      <nav className={"absolute z-10 right-50 w-80 bg-white flex flex-col items-center gap-4 " + drawerRef.current}>
+        <span className="relative right-36 hover:cursor-pointer text-xl w-5 text-center" onClick={drawerToggle}>x</span>
+        <h5 className="pt-5 px-14 border-b-2 border-black">Menu</h5>
+        
+        <ul  className="flex flex-col items-center gap-10 pt-5">
+          <li  className="px-14 border-b-2 border-b-gray-400">
+            <Link to="/" onClick={drawerToggle}>Home</Link>
           </li>
-          <li>
-            <Link to="/products">Products</Link>
+          <li className="px-12 border-b-2 border-b-gray-400">
+            <Link to="/products" onClick={drawerToggle}>Products</Link>
           </li>
-          <li>
-            <Link to="/shopping-cart">Shopping Cart</Link>
+          <li className="px-7 border-b-2 border-b-gray-400">
+            <Link to="/shopping-cart" onClick={drawerToggle}>Shopping Cart</Link>
           </li>
         </ul>
       </nav>
