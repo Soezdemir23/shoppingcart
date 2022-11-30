@@ -17,8 +17,12 @@
             "title": "To-Do",
             "tasks": [
                 {
-                    "text": "#Set up Component and folder structure.\n\n##What functionalities does a shopping cart need?\n+ first be able to show the products you chose\n+ keep the looks even if the user chooses other links to products.\n+ increase the amount of objects\n+ remove the products\n+ either show up from the left side or show it as a popup\n\n##How to structure the folder?\n",
-                    "id": "clavlmihd000b3r63kjh33xvz"
+                    "text": "comb through ticketmaster API and write down notes about it here.\nhttps://app.ticketmaster.com/discovery/v2/events.json?apikey=",
+                    "id": "clazb7mic000h3r63il1ydq98"
+                },
+                {
+                    "text": "Create a Footer Component",
+                    "id": "clazb7xf5000j3r633x2l4g0b"
                 }
             ],
             "id": "clavlmihd000c3r63nvlawoo9",
@@ -26,7 +30,16 @@
         },
         {
             "title": "Doing",
-            "tasks": [],
+            "tasks": [
+                {
+                    "text": "",
+                    "id": "clazb83th000k3r63j4qhw5qz"
+                },
+                {
+                    "text": "Create a Header Component\nit has a navigation for three things: ",
+                    "id": "clazb7opi000i3r632rk066jt"
+                }
+            ],
             "id": "clavlmihd000d3r63ggppes4f",
             "color": "#0693e3"
         },
@@ -36,6 +49,10 @@
                 {
                     "text": "If no good API comes along, scrape or create your own data for the project.\n\nFound an API Key from TicketMaster. Needs to be tested out.",
                     "id": "claweand3000g3r631zvxfluv"
+                },
+                {
+                    "text": "#Set up Component and folder structure.\n\n##What functionalities does a shopping cart need?\n+ first be able to show the products you chose\n+ keep the looks even if the user chooses other links to products.\n+ increase the amount of objects\n+ remove the products\n+ either show up from the left side or show it as a popup\n\n##How to structure the folder?\nCreate a component folder for each component if they are big, else keep it cool\n",
+                    "id": "clavlmihd000b3r63kjh33xvz"
                 }
             ],
             "id": "clavlmihd000e3r633kk3fisv",
@@ -44,5 +61,5 @@
     ],
     "autosave": true,
     "saveToFile": true,
-    "timestamp": 1669393289418
+    "timestamp": 1669561070593
 }

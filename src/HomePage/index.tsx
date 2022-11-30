@@ -1,5 +1,12 @@
+import Footer from "../Footer";
+import Header from "../Header";
+
 export default function HomePage() {
-    return (
-        <h1>HomePage</h1>
-    )
+  return (
+    <>
+      <Header />
+      <h1>HomePage</h1>
+      <Footer />
+    </>
+  );
 }
