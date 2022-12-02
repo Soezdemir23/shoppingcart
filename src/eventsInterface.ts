@@ -19,34 +19,34 @@ export interface ValueClass {
 }
 
 export interface EmbeddedClass {
-    events?: Event[];
+    events: Event[];
 }
 
 export interface Event {
-    name?:            string;
-    type?:            Type;
-    id?:              string;
-    test?:            boolean;
-    url?:             string;
-    locale?:          Locale;
-    images?:          Images;
-    sales?:           string;
-    dates?:           Dates;
-    classifications?: Classifications;
-    promoter?:        Promoter;
-    promoters?:       Classifications;
-    info?:            string;
-    pleaseNote?:      string;
-    priceRanges?:     Classifications;
-    products?:        Classifications;
-    seatmap?:         Seatmap;
-    accessibility?:   string;
-    ticketLimit?:     string;
-    ageRestrictions?: AgeRestrictions;
-    ticketing?:       Ticketing;
-    _links?:          LinksEnum;
-    _embedded?:       EmbeddedEnum;
-    outlets?:         Classifications;
+    name:            string;
+    type:            Type;
+    id:              string;
+    test:            boolean;
+    url:             string;
+    locale:          Locale;
+    images:          Images[];
+    sales:           string;
+    dates:           Dates;
+    classifications: Classifications;
+    promoter:        Promoter;
+    promoters:       Classifications;
+    info:            string;
+    pleaseNote:      string;
+    priceRanges:     Classifications;
+    products:        Classifications;
+    seatmap:         Seatmap;
+    accessibility:   string;
+    ticketLimit:     string;
+    ageRestrictions: AgeRestrictions;
+    ticketing:       Ticketing;
+    _links:          LinksEnum;
+    _embedded:       EmbeddedEnum;
+    outlets:         Classifications;
 }
 
 export enum EmbeddedEnum {
@@ -70,8 +70,13 @@ export enum Dates {
     SpanMultipleDaysFalseStartStatus = "{spanMultipleDays: false, start: {…}, status: {…}, …}",
 }
 
-export enum Images {
-    Empty = "[{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]",
+export interface Images {
+    fallback: boolean;
+    height: number;
+    ration: string;
+    url: string;
+    width: number;
+    
 }
 
 export enum Locale {
