@@ -22,16 +22,17 @@ import { Link } from "react-router-dom";
 export default function Header() {
   const [drawer, setDrawer] = useState(false);
   const drawerRef = useRef("hidden");
-  //I do not know yet how the state will influence the
-  // rendering yet
+
   const drawerToggle = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     setDrawer(!drawer);
-    if (drawer === false) {
-      drawerRef.current= "hidden"
-    } else {
-      drawerRef.current = ""
-    }
   };
+  //move the condition outside so it always tests for that thing.
+  // Boom!
+  if (drawer === false) {
+    drawerRef.current= "hidden"
+  } else {
+    drawerRef.current = ""
+  }
   
   return (
     <header className="bg-blue-500 flex">
