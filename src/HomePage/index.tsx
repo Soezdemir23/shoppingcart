@@ -1,37 +1,13 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { consumerKey } from "../env";
-import { EmbeddedClass, Event, ValueClass } from "../eventsInterface";
+import { EmbeddedClass } from "../eventsInterface";
 import Footer from "../Footer";
 import Header from "../Header";
 
-export default function HomePage() {
-  const [feed, setFeed] = useState<EmbeddedClass | undefined>(undefined);
-
-  // I SWEAR last time I made a better looking async await utilization.
-  // Insane
-  useEffect(() => {
-    fetchFeed().then((events) => {
-      const res: EmbeddedClass | undefined = events;
-      setFeed(res);
-    });
-  }, []);
-
-  async function fetchFeed() {
-    try {
-      const response = await fetch(
-        "https://app.ticketmaster.com/discovery/v2/events.json?apikey="+consumerKey,
-        { mode: "cors" }
-      );
-      const data: Promise<ValueClass> = await response.json();
-      return (await data)._embedded;
-    } catch (error) {
-      console.error("API call unsuccesful or another error: " + error);
-    }
-  }
+export default function HomePage({feed}:{feed:EmbeddedClass | undefined}) {
 
   return (
     <div className="flex flex-col">
+      
       <Header />
       <main>
         <h3 className="bg-emerald-500 text-center pt-5 text-2xl text-rose-900">
