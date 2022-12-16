@@ -45,16 +45,78 @@ export interface Event {
     ageRestrictions: AgeRestrictions;
     ticketing:       Ticketing;
     _links:          LinksEnum;
-    _embedded:       EmbeddedEnum;
+    _embedded:       EmbeddedInterface;
     outlets:         Classifications;
 }
 
-export enum EmbeddedEnum {
-    AttractionsArray2VenuesArray1 = "{attractions: Array(2), venues: Array(1)}",
+
+export interface EmbeddedInterface {
+    attractions: Attraction[];
+    venues: Venue[] ;
+}
+
+export interface Venue {
+    accessibleSeatingDetail: string;
+    address: Address;
+    boxOfficeInfo: BoxOfficeInfo;
+    city: City;
+    country: Country;
+    name: string;
+    images: Images[];
+    locale: string;
+    parkingDetail: string;
+    postalCode: string;
+    state: Country;
+    url: URLLink
+}
+interface Country {
+    name: string;
+    countryCode: string;
+}
+
+export interface City{
+    name: string;
+} 
+
+export interface BoxOfficeInfo {
+    acceptedPaymentDetail: string;
+    openHoursDetail: string;
+    phoneNumberDetail: string;
+    willCallDetail: string;
+}
+
+export interface Address {
+    line1: string;
+}
+
+
+export interface Attraction {
+    classifications: Classifications[];
+    externalLinks: ExternalLinks;
+    id: string;
+    images: Images[];
+    locale: string;
+    name: string;
+    test: boolean;
+    type: string;
+}
+
+
+export interface ExternalLinks {
+    facebook: URLLink[];
+    wiki: URLLink[];
+    twitter: URLLink[];
+    instagram: URLLink[];
+    homepage: URLLink[];
+
+}
+
+export interface URLLink {
+    url: string;
 }
 
 export enum LinksEnum {
-    AttractionsArray2SelfVenuesArray1 = "{attractions: Array(2), self: {…}, venues: Array(1)}",
+    
 }
 
 export enum AgeRestrictions {
