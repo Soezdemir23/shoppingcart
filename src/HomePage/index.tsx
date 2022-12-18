@@ -5,6 +5,10 @@ import Header from "../Header";
 
 export default function HomePage({feed}:{feed:EmbeddedClass | undefined}) {
 
+
+
+
+
   return (
     <div className="flex flex-col">
       
@@ -24,7 +28,7 @@ export default function HomePage({feed}:{feed:EmbeddedClass | undefined}) {
                 <h6 className="text-center">{event.name}</h6>
                 <img
                   className="center"
-                  src={event.images[4].url}
+                  src={event.images.filter(img => img.width === 2048 && img.ratio === "16_9")[0].url }
                   alt="event"
                 ></img>
               </div>
