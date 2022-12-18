@@ -1,5 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import ShoppinCartImage from "./shopping_cart.svg";
 /* the header is to be divided into two ways:
  * Big:
     Two header sections: 
@@ -29,11 +30,11 @@ export default function Header() {
   //move the condition outside so it always tests for that thing.
   // Boom!
   if (drawer === false) {
-    drawerRef.current= "hidden"
+    drawerRef.current = "hidden";
   } else {
-    drawerRef.current = ""
+    drawerRef.current = "";
   }
-  
+
   return (
     <header className="bg-blue-500 flex">
       {/*on click toggle the view of the drawer*/}
@@ -49,22 +50,42 @@ export default function Header() {
         </h1>
       </div>
       {/* unhide this after you manage to finish the header */}
-      <nav className={"absolute z-10 right-50 w-80 bg-white flex flex-col items-center gap-4 " + drawerRef.current}>
-        <span className="relative right-36 hover:cursor-pointer text-xl w-5 text-center" onClick={drawerToggle}>x</span>
+      <nav
+        className={
+          "absolute z-10 right-50 w-80 bg-white flex flex-col items-center gap-4 " +
+          drawerRef.current
+        }
+      >
+        <span
+          className="relative right-36 hover:cursor-pointer text-xl w-5 text-center"
+          onClick={drawerToggle}
+        >
+          x
+        </span>
         <h5 className="pt-5 px-14 border-b-2 border-black">Menu</h5>
-        
-        <ul  className="flex flex-col items-center gap-10 pt-5">
-          <li  className="px-14 border-b-2 border-b-gray-400">
-            <Link to="/" onClick={drawerToggle}>Home</Link>
+
+        <ul className="flex flex-col items-center gap-10 pt-5">
+          <li className="px-14 border-b-2 border-b-gray-400">
+            <Link to="/" onClick={drawerToggle}>
+              Home
+            </Link>
           </li>
           <li className="px-12 border-b-2 border-b-gray-400">
-            <Link to="/products" onClick={drawerToggle}>Products</Link>
+            <Link to="/products" onClick={drawerToggle}>
+              Products
+            </Link>
           </li>
           <li className="px-7 border-b-2 border-b-gray-400">
-            <Link to="/shopping-cart" onClick={drawerToggle}>Shopping Cart</Link>
+            <Link to="/shopping-cart" onClick={drawerToggle}>
+              Shopping Cart
+            </Link>
           </li>
         </ul>
       </nav>
+      <span className="fixed right-1 top-1">
+        <img className="w-14" src={ShoppinCartImage} alt="shoppingcart"></img>
+        <span className="relative bottom-9 left-6 bg-red-600 text-white rounded-full p-1">30</span>
+      </span>
     </header>
   );
 }
