@@ -1,6 +1,6 @@
 import "./App.css";
 import "./App.css"
-import { BrowserRouter, Route, Routes, useParams } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePage from "./HomePage";
 import Product from "./Product";
 import ShoppingPage from "./ShoppingPage";
@@ -11,7 +11,8 @@ import { EmbeddedClass, ValueClass } from "./eventsInterface";
 function App() {
   
   const [feed, setFeed] = useState<EmbeddedClass | undefined>(undefined);
-  let {userId} = useParams()
+
+  
   // I SWEAR last time I made a better looking async await utilization.
   // Insane
   useEffect(() => {
