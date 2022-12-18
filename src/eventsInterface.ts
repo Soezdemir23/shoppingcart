@@ -41,7 +41,7 @@ export interface Event {
     products:        Classifications;
     seatmap:         Seatmap;
     accessibility:   string;
-    ticketLimit:     string;
+    ticketLimit:     Info;
     ageRestrictions: AgeRestrictions;
     ticketing:       Ticketing;
     _links:          LinksEnum;
@@ -49,7 +49,9 @@ export interface Event {
     outlets:         Classifications;
 }
 
-
+interface Info {
+    info: string;
+}
 export interface EmbeddedInterface {
     attractions: Attraction[];
     venues: Venue[] ;
@@ -67,7 +69,7 @@ export interface Venue {
     parkingDetail: string;
     postalCode: string;
     state: Country;
-    url: URLLink
+    url: string;
 }
 interface Country {
     name: string;
@@ -135,7 +137,7 @@ export enum Dates {
 export interface Images {
     fallback: boolean;
     height: number;
-    ration: string;
+    ratio: string;
     url: string;
     width: number;
     
@@ -144,6 +146,7 @@ export interface Images {
 export enum Locale {
     EnUs = "en-us",
 }
+
 
 export enum Promoter {
     Descriptionnbaregularseasonntlusaid = "{description: \"NBA REGULAR SEASON / NTL / USA\", id:…}",
@@ -175,3 +178,4 @@ export interface Page {
     totalPages?:    number;
     number?:        number;
 }
+
