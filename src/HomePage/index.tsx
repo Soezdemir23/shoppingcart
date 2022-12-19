@@ -1,17 +1,18 @@
 import { Link } from "react-router-dom";
-import { EmbeddedClass } from "../eventsInterface";
 import Footer from "../Footer";
 import Header from "../Header";
+import { HomePageProps } from "../eventsInterface";
+export default function HomePage(
+  {feed, onClick}:HomePageProps
+  ) {
 
-export default function HomePage({feed}:{feed:EmbeddedClass | undefined}) {
 
-
-
-
-
+  const handleBuyClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>)  => {
+    
+    onClick(e);
+  }
   return (
     <div className="flex flex-col">
-      
       <Header />
       <main>
         <h3 className="bg-emerald-500 text-center pt-5 text-2xl text-rose-900">
@@ -33,7 +34,7 @@ export default function HomePage({feed}:{feed:EmbeddedClass | undefined}) {
                 ></img>
               </div>
               <div className="flex justify-between">
-                <button className="px-2 py-1 bg-blue-600 text-white rounded-md active:bg-blue-200 active:text-black">
+                <button data-key={event.id} onClick={handleBuyClick} className="px-2 py-1 bg-blue-600 text-white rounded-md active:bg-blue-200 active:text-black">
                   Buy 1 ticket immediately
                 </button>
                 <Link to={`/products/${event.id}`}>
