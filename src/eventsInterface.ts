@@ -189,6 +189,7 @@ export interface ProductProps {
 export interface HomePageProps {
     feed: EmbeddedClass | undefined;
     onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+    shoppingCart: ShoppingCart[];
 }
 
 export interface ShoppingPageProps {
