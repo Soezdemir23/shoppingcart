@@ -3,12 +3,12 @@ import Footer from "../Footer";
 import Header from "../Header";
 import { HomePageProps } from "../eventsInterface";
 export default function HomePage(
-  {feed, onClick}:HomePageProps
+  {feed, onClick, shoppingCart}:HomePageProps
   ) {
 
 
   const handleBuyClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>)  => {
-    
+
     onClick(e);
   }
   return (
@@ -34,9 +34,22 @@ export default function HomePage(
                 ></img>
               </div>
               <div className="flex justify-between">
+                {/* 
+                if the shoppingCart id or content is undefined, or returns nothing, then 
+                    
+                */}
+                {shoppingCart.find((object) => object.id === event.id) === undefined || false?
                 <button data-key={event.id} onClick={handleBuyClick} className="px-2 py-1 bg-blue-600 text-white rounded-md active:bg-blue-200 active:text-black">
                   Buy 1 ticket immediately
                 </button>
+                : 
+                shoppingCart.find((object) => object.id === event.id)?.maxReached === true?
+                <button data-key={event.id} onClick={handleBuyClick} className="px-2 py-1 bg-red-600 text-white rounded-md active:bg-red-500 active:text-black animate-bounce">
+                  Max. Ticket reached</button>
+                  :<button data-key={event.id} onClick={handleBuyClick} className="px-2 py-1 bg-blue-600 text-white rounded-md active:bg-blue-200 active:text-black">
+                  Buy 1 ticket immediately
+                </button>
+                }
                 <Link to={`/products/${event.id}`}>
                   <button className="px-2 py-1 bg-blue-600 text-white rounded-md">
                     Details
