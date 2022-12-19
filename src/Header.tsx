@@ -84,7 +84,7 @@ export default function Header() {
       </nav>
       <span className="fixed right-1 top-1">
         <img className="w-14" src={ShoppinCartImage} alt="shoppingcart"></img>
-        <span className="relative bottom-9 left-6 bg-red-600 text-white rounded-full p-1">30</span>
+        <span className="relative bottom-9 left-6 bg-red-600 text-white rounded-full px-1">30</span>
       </span>
     </header>
   );
