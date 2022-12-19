@@ -1,3 +1,5 @@
+import React from "react";
+
 export interface Welcome {
     name?:       string;
     value?:      ValueClass | string;
@@ -179,3 +181,17 @@ export interface Page {
     number?:        number;
 }
 
+export interface ProductProps {
+    feed: EmbeddedClass | undefined;
+    onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+}
+
+export interface HomePageProps {
+    feed: EmbeddedClass | undefined;
+    onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+}
+
+export interface ShoppingPageProps {
+    onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+    
+}
