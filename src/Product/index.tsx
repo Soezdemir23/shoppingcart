@@ -1,13 +1,13 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { EmbeddedClass } from "../eventsInterface";
+import { ProductProps } from "../eventsInterface";
 import Footer from "../Footer";
 import Header from "../Header";
 
-export default function Product({ feed }: { feed: EmbeddedClass | undefined }) {
+export default function Product({ feed, onSubmit }:  ProductProps) {
   const { id } = useParams();
   const product = feed?.events.find((prod) => prod.id === id);
-  const maxTickets: string | undefined = product?.ticketLimit.info;
+  const maxTickets: string | undefined = product?.ticketLimit === undefined? "99": product.ticketLimit.info;
   const maximumTicketRef = useRef(0);
   const [currentTickets, setCurrentTickets] = useState(0);
 
@@ -254,12 +254,15 @@ export default function Product({ feed }: { feed: EmbeddedClass | undefined }) {
             change based on supply and demand.
           </p>
           <form
+          
           className="flex gap-5"
             onSubmit={(e) => {
               e.preventDefault();
+              onSubmit(e)
             }}
           >
             <select
+            id="selection"
               onChange={(e) =>
                 setCurrentTickets(currentTickets - parseInt(e.target.value))
               }
@@ -267,6 +270,7 @@ export default function Product({ feed }: { feed: EmbeddedClass | undefined }) {
               {selectTicks}
             </select>
             <button 
+            type={"submit"}
             className="bg-blue-600 text-white px-3 rounded-md active:bg-blue-300 active:text-black">
               Buy
             </button>
