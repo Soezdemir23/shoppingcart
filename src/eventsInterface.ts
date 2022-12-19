@@ -195,3 +195,11 @@ export interface ShoppingPageProps {
     onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
     
 }
+
+export interface ShoppingCart {
+    name: string | undefined;
+    id: string | undefined;
+    maxTickets: number;
+    numOfReservedTickets: number;
+    maxReached: boolean;
+}
