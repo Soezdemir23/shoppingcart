@@ -89,7 +89,6 @@ function App() {
       // go through the products, check for the 
       setShoppingCart(shoppingCart.map((prod) => {
        if(prod.id === product?.id) {
-
         if (prod.maxReached === false) {
           prod.numOfReservedTickets +=1;
         }
@@ -110,7 +109,7 @@ function App() {
         {/*Homepage, where the stuff is being presented*/}
         <Route
           path="/"
-          element={<HomePage feed={feed} onClick={handleBuyClick} />}
+          element={<HomePage feed={feed} onClick={handleBuyClick} shoppingCart={shoppingCart} />}
         />
         {/*Page for items. Try to make a switch out of it.*/}
         <Route
