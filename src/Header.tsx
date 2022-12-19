@@ -25,6 +25,12 @@ import ShoppinCartImage from "./shopping_cart.svg";
 export default function Header({shoppingCart}: AllProps) {
   const [drawer, setDrawer] = useState(false);
   const drawerRef = useRef("hidden");
+  const numberOfItemsRef = useRef(0);
+  let sum = 0;
+  shoppingCart.forEach(prod => sum += prod.numOfReservedTickets)
+  numberOfItemsRef.current = sum;
+
+
 
   const drawerToggle = (e: React.MouseEvent<HTMLElement, MouseEvent>) => {
     setDrawer(!drawer);
@@ -86,7 +92,7 @@ export default function Header({shoppingCart}: AllProps) {
       </nav>
       <span className="fixed right-1 top-1">
         <img className="w-14" src={ShoppinCartImage} alt="shoppingcart"></img>
-        <span className="relative bottom-9 left-6 bg-red-600 text-white rounded-full px-1">30</span>
+        <span className="relative bottom-9 left-6 bg-red-600 text-white rounded-full px-1">{numberOfItemsRef.current}</span>
       </span>
     </header>
   );
