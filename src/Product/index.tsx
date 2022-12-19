@@ -1,10 +1,10 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { ProductProps } from "../eventsInterface";
+import { AllProps } from "../eventsInterface";
 import Footer from "../Footer";
 import Header from "../Header";
 
-export default function Product({ feed, onSubmit }:  ProductProps) {
+export default function Product({ feed, onSubmit, shoppingCart }:  AllProps) {
   const { id } = useParams();
   const product = feed?.events.find((prod) => prod.id === id);
   const maxTickets: string | undefined = product?.ticketLimit === undefined? "99": product.ticketLimit.info;
@@ -47,7 +47,7 @@ export default function Product({ feed, onSubmit }:  ProductProps) {
 
   return (
     <>
-      <Header />
+      <Header shoppingCart={shoppingCart} />
       <section>
         <article>
           <h3 className="text-center">{product?.name}</h3>
@@ -258,7 +258,7 @@ export default function Product({ feed, onSubmit }:  ProductProps) {
           className="flex gap-5"
             onSubmit={(e) => {
               e.preventDefault();
-              onSubmit(e)
+              onSubmit!(e)
             }}
           >
             <select

@@ -1,5 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
+import { AllProps } from "./eventsInterface";
+
 import ShoppinCartImage from "./shopping_cart.svg";
 /* the header is to be divided into two ways:
  * Big:
@@ -20,7 +22,7 @@ import ShoppinCartImage from "./shopping_cart.svg";
  *  + keep up the ordering
  *  + Give it dummy links or remove some features.
  */
-export default function Header() {
+export default function Header({shoppingCart}: AllProps) {
   const [drawer, setDrawer] = useState(false);
   const drawerRef = useRef("hidden");
 

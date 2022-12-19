@@ -1,19 +1,20 @@
 import { Link } from "react-router-dom";
 import Footer from "../Footer";
 import Header from "../Header";
-import { HomePageProps } from "../eventsInterface";
+import { AllProps } from "../eventsInterface";
 export default function HomePage(
-  {feed, onClick, shoppingCart}:HomePageProps
+  {feed, onClick, shoppingCart}:AllProps
   ) {
 
 
   const handleBuyClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>)  => {
 
-    onClick(e);
+    onClick!(e);
   }
+  console.log(shoppingCart)
   return (
     <div className="flex flex-col">
-      <Header />
+      <Header  shoppingCart={shoppingCart} />
       <main>
         <h3 className="bg-emerald-500 text-center pt-5 text-2xl text-rose-900">
           Currently available events

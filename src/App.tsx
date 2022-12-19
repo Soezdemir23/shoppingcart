@@ -114,12 +114,12 @@ function App() {
         {/*Page for items. Try to make a switch out of it.*/}
         <Route
           path="/products/:id"
-          element={<Product feed={feed} onSubmit={handleBuySubmission} />}
+          element={<Product feed={feed} onSubmit={handleBuySubmission} shoppingCart={[]} />}
         />
         {/*shopping thing */}
         <Route
           path="/shopping-cart"
-          element={<ShoppingPage onClick={handleBuyClick} />}
+          element={<ShoppingPage onClick={handleBuyClick} shoppingCart={[]} />}
         />
         {/*Thank people for buying the stuff */}
       </Routes>

@@ -181,20 +181,11 @@ export interface Page {
     number?:        number;
 }
 
-export interface ProductProps {
-    feed: EmbeddedClass | undefined;
-    onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
-}
-
-export interface HomePageProps {
-    feed: EmbeddedClass | undefined;
-    onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-    shoppingCart: ShoppingCart[];
-}
-
-export interface ShoppingPageProps {
-    onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-    
+export interface AllProps {
+    feed?: EmbeddedClass | undefined;
+    onSubmit?: (event: React.FormEvent<HTMLFormElement>) => void;
+    onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+    shoppingCart: ShoppingCart[]
 }
 
 export interface ShoppingCart {
