@@ -191,7 +191,13 @@ export interface AllProps {
 export interface ShoppingCart {
     name: string | undefined;
     id: string | undefined;
+    image? : string; 
     maxTickets: number;
     numOfReservedTickets: number;
     maxReached: boolean;
+}
+
+export interface ShoppingCartMenuProps {
+    products: ShoppingCart[];
+    popupDrawer: boolean;
 }
