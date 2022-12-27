@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { AllProps } from "./eventsInterface";
+import ShoppingCartMenu from "./ShoppingCartMenu";
 
 import ShoppinCartImage from "./shopping_cart.svg";
 /* the header is to be divided into two ways:
@@ -24,6 +25,7 @@ import ShoppinCartImage from "./shopping_cart.svg";
  */
 export default function Header({shoppingCart}: AllProps) {
   const [drawer, setDrawer] = useState(false);
+  const [hidePopUpMenu, setHidePopUpMenu] = useState(true)
   const drawerRef = useRef("hidden");
   const numberOfItemsRef = useRef(0);
   let sum = 0;
@@ -90,10 +92,11 @@ export default function Header({shoppingCart}: AllProps) {
           </li>
         </ul>
       </nav>
-      <span className="fixed right-1 top-1">
+      <span onClick={() => setHidePopUpMenu(!hidePopUpMenu)} className="fixed right-1 top-1 hover:cursor-pointer">
         <img className="w-14" src={ShoppinCartImage} alt="shoppingcart"></img>
         <span className="relative bottom-9 left-6 bg-red-600 text-white rounded-full px-1">{numberOfItemsRef.current}</span>
       </span>
+      <ShoppingCartMenu shoppingCart={shoppingCart} popUpDrawer={hidePopUpMenu}/>
     </header>
   );
 }
