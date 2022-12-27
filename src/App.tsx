@@ -30,7 +30,7 @@ function App() {
       const data: Promise<ValueClass> = await response.json();
       return (await data)._embedded;
     } catch (error) {
-      console.error("API call unsuccesful or another error: " + error);
+      console.error("Please make sure whether you have internet access or not" + error);
     }
   }
 
@@ -68,6 +68,7 @@ function App() {
       const name = product?.name;
       const id = product?.id;
       let maxTickets: number = 0;
+      let cartImage = product?.images.filter(image => image.width <400)[0].url
       if (product?.ticketLimit !== undefined) {
         const regex = /\d+/;
         const matches = product.ticketLimit.info?.match(regex);
@@ -82,7 +83,9 @@ function App() {
         id: id,
         maxTickets: maxTickets,
         numOfReservedTickets: 1,
-        maxReached: false
+        maxReached: false,
+        image: cartImage
+        
       };
       setShoppingCart([...shoppingCart, object])
     } else {
