@@ -30,7 +30,9 @@ function App() {
       const data: Promise<ValueClass> = await response.json();
       return (await data)._embedded;
     } catch (error) {
-      console.error("Please make sure whether you have internet access or not" + error);
+      console.error(
+        "Please make sure whether you have internet access or not" + error
+      );
     }
   }
 
@@ -44,7 +46,6 @@ function App() {
   const handleBuyClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-   
     let product = feed?.events.filter(
       (event) => event.id === e.currentTarget.dataset.key
     )[0];
@@ -68,7 +69,8 @@ function App() {
       const name = product?.name;
       const id = product?.id;
       let maxTickets: number = 0;
-      let cartImage = product?.images.filter(image => image.width <400)[0].url
+      let cartImage = product?.images.filter((image) => image.width < 400)[0]
+        .url;
       if (product?.ticketLimit !== undefined) {
         const regex = /\d+/;
         const matches = product.ticketLimit.info?.match(regex);
@@ -84,26 +86,70 @@ function App() {
         maxTickets: maxTickets,
         numOfReservedTickets: 1,
         maxReached: false,
-        image: cartImage
-        
+        image: cartImage,
       };
-      setShoppingCart([...shoppingCart, object])
+      setShoppingCart([...shoppingCart, object]);
     } else {
-      // go through the products, check for the 
-      setShoppingCart(shoppingCart.map((prod) => {
-       if(prod.id === product?.id) {
-        if (prod.maxReached === false) {
-          prod.numOfReservedTickets +=1;
-        }
-        if (prod.numOfReservedTickets === prod.maxTickets) {
-          prod.maxReached = true;
-        }
-        return prod;
-       }
-       return prod;
-      }))
+      // go through the products, check for the
+      setShoppingCart(
+        shoppingCart.map((prod) => {
+          if (prod.id === product?.id) {
+            if (prod.maxReached === false) {
+              prod.numOfReservedTickets += 1;
+            }
+            if (prod.numOfReservedTickets === prod.maxTickets) {
+              prod.maxReached = true;
+            }
+            return prod;
+          }
+          return prod;
+        })
+      );
     }
     // first of all, create properties made of: name of event, id and if available, max. Tickets, IF the
+  };
+
+  const OnIncrementClick = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+
+    setShoppingCart(
+      shoppingCart.map((product) => {
+        if (product.id === e.currentTarget.dataset.id) {
+          console.log(product)
+          if (product.maxReached === true) {
+            return product;
+          } else if (product.maxTickets === product.numOfReservedTickets) {
+            product.maxReached = true;
+            return product;
+          }
+          product.numOfReservedTickets++;
+        }
+        return product;
+      })
+    );
+  };
+
+  const onDecrementClick = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    setShoppingCart(
+      shoppingCart.map((product) => {
+        if (product.id === e.currentTarget.dataset.id) {
+          console.log(product);
+          //  debugger;
+          if (product.maxReached === true) {
+            product.maxReached = false;
+            return product
+          }
+          if (product.numOfReservedTickets === 1){
+            return product
+          }
+          product.numOfReservedTickets--;
+        }
+        return product
+      })
+    );
   };
 
   return (
@@ -112,17 +158,39 @@ function App() {
         {/*Homepage, where the stuff is being presented*/}
         <Route
           path="/"
-          element={<HomePage feed={feed} onClick={handleBuyClick} shoppingCart={shoppingCart} />}
+          element={
+            <HomePage
+              feed={feed}
+              onClick={handleBuyClick}
+              shoppingCart={shoppingCart}
+              onIncrementClick={OnIncrementClick}
+              onDecrementClick={onDecrementClick}
+            />
+          }
         />
         {/*Page for items. Try to make a switch out of it.*/}
         <Route
           path="/products/:id"
-          element={<Product feed={feed} onSubmit={handleBuySubmission} shoppingCart={[]} />}
+          element={
+            <Product
+              feed={feed}
+              onSubmit={handleBuySubmission}
+              shoppingCart={shoppingCart}
+              onDecrementClick={onDecrementClick}
+              onIncrementClick={OnIncrementClick}
+            />
+          }
         />
         {/*shopping thing */}
         <Route
           path="/shopping-cart"
-          element={<ShoppingPage onClick={handleBuyClick} shoppingCart={[]} />}
+          element={
+            <ShoppingPage
+              onIncrementClick={onDecrementClick}
+              onDecrementClick={OnIncrementClick}
+              shoppingCart={shoppingCart}
+            />
+          }
         />
         {/*Thank people for buying the stuff */}
       </Routes>

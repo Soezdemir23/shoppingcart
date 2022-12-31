@@ -1,10 +1,18 @@
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { AllProps } from "../eventsInterface";
+import { AllProps, EmbeddedClass, ShoppingCart } from "../eventsInterface";
 import Footer from "../Footer";
 import Header from "../Header";
 
-export default function Product({ feed, onSubmit, shoppingCart }:  AllProps) {
+export default function Product( props: {
+  shoppingCart:ShoppingCart[];
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void
+  feed: EmbeddedClass | undefined
+  onIncrementClick: (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  onDecrementClick: (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+}) {
+  const {shoppingCart, onSubmit, feed, onIncrementClick, onDecrementClick} = props;
+
   const { id } = useParams();
   const product = feed?.events.find((prod) => prod.id === id);
   const maxTickets: string | undefined = product?.ticketLimit === undefined? "99": product.ticketLimit.info;
@@ -42,12 +50,10 @@ export default function Product({ feed, onSubmit, shoppingCart }:  AllProps) {
   let teamTwoPic = product?._embedded.attractions[1].images.filter(
     (img) => img.width === 2048 && img.ratio === "16_9"
   )[0].url;
-  console.log(teamOnePic);
-  console.log(teamTwoPic);
 
   return (
     <>
-      <Header shoppingCart={shoppingCart} />
+      <Header shoppingCart={shoppingCart} onIncrementClick={onIncrementClick} onDecrementClick={onDecrementClick} />
       <section>
         <article>
           <h3 className="text-center">{product?.name}</h3>

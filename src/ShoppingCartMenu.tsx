@@ -3,8 +3,18 @@ import { ShoppingCart } from "./eventsInterface";
 export default function ShoppingCartMenu(props: {
   shoppingCart: ShoppingCart[];
   popUpDrawer: boolean;
+  onIncrementClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  onDecrementClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }) {
-  const { shoppingCart, popUpDrawer } = props;
+  const { shoppingCart, popUpDrawer, onIncrementClick, onDecrementClick } = props;
+
+  const incrementClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    onIncrementClick(e);
+  }
+
+  const decrementClick = (e : React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    onDecrementClick(e);
+  }
 
   return (
     <div
@@ -18,9 +28,9 @@ export default function ShoppingCartMenu(props: {
       </span>
       <h4 className="text-center">ShoppingCart:</h4>
       
-      <div title="children" className="px-2 pb-2 border-b-4 border-b-blue-600">
+      <div title="children" className="px-2 pb-2 border-b-4 ">
       {shoppingCart.map((product) =>(
-      <div key={product.id}title="child">
+      <div key={product.id}title="child" data-id={product.id}>
         <h5 title="Title">{product.name}</h5>
         <img className="w-20" src={product.image}alt="Event" title="Event Picture"></img>
         <input
@@ -32,10 +42,10 @@ export default function ShoppingCartMenu(props: {
           placeholder="Enter the number of products"
         />
         <div>
-          <button onClick={product.numOfReservedTickets++} className="bg-slate-500 text-white px-4 rounded-l-xl active:bg-slate-300 active:text-black hover:bg-emerald-400">
+          <button data-id={product.id} onClick={(e) => incrementClick(e)} className="bg-slate-500 text-white px-4 rounded-l-xl active:bg-slate-300 active:text-black hover:bg-emerald-400">
             +
           </button>
-          <button className="bg-slate-500 text-white px-4 rounded-r-xl active:bg-slate-300 active:text-black hover:bg-rose-400">
+          <button data-id={product.id} onClick={(e) => decrementClick(e)} className="bg-slate-500 text-white px-4 rounded-r-xl active:bg-slate-300 active:text-black hover:bg-rose-400">
             -
           </button>
         </div>

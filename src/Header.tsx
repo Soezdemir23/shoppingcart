@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { AllProps } from "./eventsInterface";
+import { AllProps, ShoppingCart } from "./eventsInterface";
 import ShoppingCartMenu from "./ShoppingCartMenu";
 
 import ShoppinCartImage from "./shopping_cart.svg";
@@ -23,7 +23,14 @@ import ShoppinCartImage from "./shopping_cart.svg";
  *  + keep up the ordering
  *  + Give it dummy links or remove some features.
  */
-export default function Header({shoppingCart}: AllProps) {
+export default function Header( props: {
+  shoppingCart: ShoppingCart[];
+  onIncrementClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  onDecrementClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+}) {
+  const {shoppingCart, onIncrementClick, onDecrementClick} = props;
+
+
   const [drawer, setDrawer] = useState(false);
   const [hidePopUpMenu, setHidePopUpMenu] = useState(true)
   const drawerRef = useRef("hidden");
@@ -96,7 +103,7 @@ export default function Header({shoppingCart}: AllProps) {
         <img className="w-14" src={ShoppinCartImage} alt="shoppingcart"></img>
         <span className="relative bottom-9 left-6 bg-red-600 text-white rounded-full px-1">{numberOfItemsRef.current}</span>
       </span>
-      <ShoppingCartMenu shoppingCart={shoppingCart} popUpDrawer={hidePopUpMenu}/>
+      <ShoppingCartMenu shoppingCart={shoppingCart} popUpDrawer={hidePopUpMenu} onIncrementClick={onIncrementClick} onDecrementClick={onDecrementClick}/>
     </header>
   );
 }
