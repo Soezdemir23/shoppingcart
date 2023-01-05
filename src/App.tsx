@@ -6,6 +6,7 @@ import ShoppingPage from "./ShoppingPage";
 import React, { useEffect, useState } from "react";
 import { consumerKey } from "./env";
 import { EmbeddedClass, ShoppingCart, ValueClass } from "./eventsInterface";
+import NotFound from "./NotFound";
 
 function App() {
   const [feed, setFeed] = useState<EmbeddedClass | undefined>(undefined);
@@ -37,9 +38,53 @@ function App() {
   }
 
   const handleBuySubmission = (e: React.FormEvent<HTMLFormElement>) => {
-    const form = e.target as HTMLFormElement;
-    const select = form.elements.namedItem("selection") as HTMLSelectElement;
-    console.log(typeof select.value);
+    const select = e.currentTarget.elements.item(0) as HTMLSelectElement;
+    const value = select.options[select.selectedIndex];
+
+    const product = shoppingCart.filter(
+      (product) => product.id === e.currentTarget.dataset.id
+    )[0];
+    // product exists, truthy value, filter away the stuff and the n put
+    if (product) {
+      product.numOfReservedTickets = parseInt(value.value);
+      setShoppingCart([
+        ...shoppingCart.filter(
+          (product) => product.id !== e.currentTarget.dataset.id
+        ),
+        product,
+      ]);
+      // product doesn't exist inside the shoppingCart array state
+    } else {
+      let newProduct = feed?.events.filter(
+        (event) => event.id === e.currentTarget.dataset.id
+      )[0];
+
+      const name = newProduct?.name;
+      const id = newProduct?.id;
+      let maxTickets: number = 0;
+      let cartImage = newProduct?.images.filter((image) => image.width < 400)[0]
+        .url;
+      if (newProduct?.ticketLimit !== undefined) {
+        const regex = /\d+/;
+        const matches = newProduct.ticketLimit.info?.match(regex);
+        let result = "";
+        matches?.forEach((res) => (result += res));
+        maxTickets = parseInt(result);
+      } else {
+        maxTickets = 99;
+      }
+      let object: ShoppingCart = {
+        name: name,
+        id: id,
+        maxTickets: maxTickets,
+        numOfReservedTickets: parseInt(value.value),
+        maxReached: false,
+        image: cartImage,
+      };
+
+      setShoppingCart([...shoppingCart, object]);
+    }
+    console.log(value, e.currentTarget.dataset.id);
   };
 
   // we buy one ticket by clicking here, then we need to create the first shoppingList object here or
@@ -112,14 +157,16 @@ function App() {
   const OnIncrementClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-
     setShoppingCart(
       shoppingCart.map((product) => {
         if (product.id === e.currentTarget.dataset.id) {
-          console.log(product)
+          console.log(product);
           if (product.maxReached === true) {
+            console.log("Increment: maxReached");
             return product;
           } else if (product.maxTickets === product.numOfReservedTickets) {
+            console.log("Increment: maxTickets");
+
             product.maxReached = true;
             return product;
           }
@@ -137,24 +184,41 @@ function App() {
       shoppingCart.map((product) => {
         if (product.id === e.currentTarget.dataset.id) {
           console.log(product);
-          //  debugger;
           if (product.maxReached === true) {
+            console.log("product maxReached");
             product.maxReached = false;
-            return product
+            return product;
           }
-          if (product.numOfReservedTickets === 1){
-            return product
+          if (product.numOfReservedTickets === 1) {
+            console.log("numberOfReserved");
+
+            return product;
           }
           product.numOfReservedTickets--;
         }
-        return product
+        return product;
       })
     );
+  };
+
+  const onRemoveClick = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => {
+    if (e.currentTarget.textContent === "Remove") {
+      setShoppingCart(
+        shoppingCart.filter(
+          (product) => product.id !== e.currentTarget.dataset.id
+        )
+      );
+    } else {
+      setShoppingCart([]);
+    }
   };
 
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="*" element={<NotFound />} />
         {/*Homepage, where the stuff is being presented*/}
         <Route
           path="/"
@@ -165,6 +229,7 @@ function App() {
               shoppingCart={shoppingCart}
               onIncrementClick={OnIncrementClick}
               onDecrementClick={onDecrementClick}
+              onRemoveClick={onRemoveClick}
             />
           }
         />
@@ -178,6 +243,7 @@ function App() {
               shoppingCart={shoppingCart}
               onDecrementClick={onDecrementClick}
               onIncrementClick={OnIncrementClick}
+              onRemoveClick={onRemoveClick}
             />
           }
         />
@@ -186,9 +252,10 @@ function App() {
           path="/shopping-cart"
           element={
             <ShoppingPage
-              onIncrementClick={onDecrementClick}
-              onDecrementClick={OnIncrementClick}
+              onIncrementClick={OnIncrementClick}
+              onDecrementClick={onDecrementClick}
               shoppingCart={shoppingCart}
+              onRemoveClick={onRemoveClick}
             />
           }
         />
