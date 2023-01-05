@@ -1,21 +1,35 @@
-import { ReactNode, useEffect, useRef, useState } from "react";
+import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { AllProps, EmbeddedClass, ShoppingCart } from "../eventsInterface";
 import Footer from "../Footer";
 import Header from "../Header";
 
-export default function Product( props: {
-  shoppingCart:ShoppingCart[];
-  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void
-  feed: EmbeddedClass | undefined
-  onIncrementClick: (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
-  onDecrementClick: (e:React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+export default function Product(props: {
+  shoppingCart: ShoppingCart[];
+  onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
+  feed: EmbeddedClass | undefined;
+  onIncrementClick: (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void;
+  onDecrementClick: (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void;
+  onRemoveClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
 }) {
-  const {shoppingCart, onSubmit, feed, onIncrementClick, onDecrementClick} = props;
+  const {
+    shoppingCart,
+    onSubmit,
+    feed,
+    onIncrementClick,
+    onDecrementClick,
+    onRemoveClick,
+  } = props;
 
   const { id } = useParams();
+  const cartProduct = shoppingCart.find((prod) => prod.id === id);
   const product = feed?.events.find((prod) => prod.id === id);
-  const maxTickets: string | undefined = product?.ticketLimit === undefined? "99": product.ticketLimit.info;
+  const maxTickets: string | undefined =
+    product?.ticketLimit === undefined ? "99" : product.ticketLimit.info;
   const maximumTicketRef = useRef(0);
   const [currentTickets, setCurrentTickets] = useState(0);
 
@@ -35,14 +49,22 @@ export default function Product( props: {
       check
     </option>
   );
-  for (let i = 0; i < currentTickets; i++) {
+  // this is siiiick
+  console.log("the loop");
+  for (
+    let i = 0;
+    i <
+    (cartProduct?.numOfReservedTickets === undefined
+      ? currentTickets
+      : cartProduct.numOfReservedTickets);
+    i++
+  ) {
     selectTicks.push(
       <option key={i + 1} value={i + 1}>
         {i + 1} {i + 1 > 1 ? "Tickets" : "Ticket"}
       </option>
     );
   }
-  console.log(product);
 
   let teamOnePic = product?._embedded.attractions[0].images.filter(
     (img) => img.width === 2048 && img.ratio === "16_9"
@@ -53,7 +75,12 @@ export default function Product( props: {
 
   return (
     <>
-      <Header shoppingCart={shoppingCart} onIncrementClick={onIncrementClick} onDecrementClick={onDecrementClick} />
+      <Header
+        shoppingCart={shoppingCart}
+        onIncrementClick={onIncrementClick}
+        onDecrementClick={onDecrementClick}
+        onRemoveClick={onRemoveClick}
+      />
       <section>
         <article>
           <h3 className="text-center">{product?.name}</h3>
@@ -256,33 +283,39 @@ export default function Product( props: {
           </p>
           <p>
             Please be <span className="text-red-600 underline">aware</span>: You
-            may only buy max. <span>{currentTickets}</span>. Numbers of tickets
-            change based on supply and demand.
+            may only buy max. <span>{cartProduct?.numOfReservedTickets}</span>.
+            Numbers of tickets change based on supply and demand.
           </p>
           <form
-          
-          className="flex gap-5"
+            className="flex gap-5"
+            data-id={product?.id}
             onSubmit={(e) => {
               e.preventDefault();
-              onSubmit!(e)
+              const select = e.currentTarget.elements.item(
+                0
+              ) as HTMLSelectElement;
+              const option = select.options[select.selectedIndex];
+              setCurrentTickets(currentTickets - parseInt(option.value));
+              onSubmit!(e);
             }}
           >
-            <select
-            id="selection"
-              onChange={(e) =>
-                setCurrentTickets(currentTickets - parseInt(e.target.value))
-              }
-            >
+            <select name="tickets" id="selection">
               {selectTicks}
             </select>
-            <button 
-            type={"submit"}
-            className="bg-blue-600 text-white px-3 rounded-md active:bg-blue-300 active:text-black">
+            <button
+              type={"submit"}
+              className="bg-blue-600 text-white px-3 rounded-md active:bg-blue-300 active:text-black"
+            >
               Buy
             </button>
-            <button 
+            <button
               className="bg-blue-600 text-white px-3 rounded-md active:bg-blue-300 active:text-black"
-              onClick={(e) => setCurrentTickets(maximumTicketRef.current)}
+              onClick={() => {
+                setTimeout(() => {
+                  console.log();
+                  setCurrentTickets(maximumTicketRef.current);
+                }, 1000);
+              }}
             >
               Clear Selection
             </button>
