@@ -1,9 +1,12 @@
 import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { AllProps, EmbeddedClass, ShoppingCart } from "../eventsInterface";
+import { EmbeddedClass, ShoppingCart } from "../eventsInterface";
 import Footer from "../Footer";
 import Header from "../Header";
-
+// most props need to be passed higher. get lifted higher than it is atm.
+// why?
+// shoppingCart needs to be handled at the App.tsx level, then sent down to the rest of the products pages. Otherwise it just doesn't work.
+// so first let's go through the code and see what doesn't work or is confusing.
 export default function Product(props: {
   shoppingCart: ShoppingCart[];
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
@@ -15,6 +18,9 @@ export default function Product(props: {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => void;
   onRemoveClick: (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
+  onHandleResetClick: (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) => void;
 }) {
   const {
     shoppingCart,
@@ -23,16 +29,21 @@ export default function Product(props: {
     onIncrementClick,
     onDecrementClick,
     onRemoveClick,
+    onHandleResetClick,
   } = props;
 
   const { id } = useParams();
+  // we should lift changes for this back up to the app.tsx
   const cartProduct = shoppingCart.find((prod) => prod.id === id);
+  // we need this to populate the page
   const product = feed?.events.find((prod) => prod.id === id);
   const maxTickets: string | undefined =
     product?.ticketLimit === undefined ? "99" : product.ticketLimit.info;
-  const maximumTicketRef = useRef(0);
-  const [currentTickets, setCurrentTickets] = useState(0);
 
+  const maximumTicketRef = useRef(0);
+  // needs to be put higher compoent
+  const [currentTickets, setCurrentTickets] = useState(0);
+  // with the product we can
   useEffect(() => {
     if (maxTickets !== undefined) {
       const regex = /\d+/;
@@ -49,14 +60,14 @@ export default function Product(props: {
       check
     </option>
   );
-  // this is siiiick
-  console.log("the loop");
+  // either use cartProduct.reservcedTickets or something or use maximumTicketRef,current
+
   for (
     let i = 0;
     i <
     (cartProduct?.numOfReservedTickets === undefined
-      ? currentTickets
-      : cartProduct.numOfReservedTickets);
+      ? maximumTicketRef.current
+      : Math.abs(cartProduct.numOfReservedTickets - cartProduct.maxTickets));
     i++
   ) {
     selectTicks.push(
@@ -72,6 +83,12 @@ export default function Product(props: {
   let teamTwoPic = product?._embedded.attractions[1].images.filter(
     (img) => img.width === 2048 && img.ratio === "16_9"
   )[0].url;
+
+  function handleResetClick(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) {
+    onHandleResetClick(e);
+  }
 
   return (
     <>
@@ -283,8 +300,15 @@ export default function Product(props: {
           </p>
           <p>
             Please be <span className="text-red-600 underline">aware</span>: You
-            may only buy max. <span>{cartProduct?.numOfReservedTickets}</span>.
-            Numbers of tickets change based on supply and demand.
+            may only buy max.{" "}
+            <span>
+              {cartProduct === undefined
+                ? maximumTicketRef.current
+                : Math.abs(
+                    cartProduct.numOfReservedTickets - cartProduct.maxTickets
+                  )}
+            </span>
+            . Numbers of tickets change based on supply and demand.
           </p>
           <form
             className="flex gap-5"
@@ -310,10 +334,12 @@ export default function Product(props: {
             </button>
             <button
               className="bg-blue-600 text-white px-3 rounded-md active:bg-blue-300 active:text-black"
-              onClick={() => {
+              data-id={product?.id}
+              onClick={(e) => {
+                e.preventDefault();
                 setTimeout(() => {
                   console.log();
-                  setCurrentTickets(maximumTicketRef.current);
+                  handleResetClick(e);
                 }, 1000);
               }}
             >
