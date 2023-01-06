@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePage from "./HomePage";
 import Product from "./Product";
 import ShoppingPage from "./ShoppingPage";
-import React, { useEffect, useState } from "react";
+import React, { SetStateAction, useEffect, useState } from "react";
 import { consumerKey } from "./env";
 import { EmbeddedClass, ShoppingCart, ValueClass } from "./eventsInterface";
 import NotFound from "./NotFound";
@@ -81,7 +81,8 @@ function App() {
         maxReached: false,
         image: cartImage,
       };
-
+      if (object.maxTickets === object.numOfReservedTickets)
+        object.maxReached = true;
       setShoppingCart([...shoppingCart, object]);
     }
     console.log(value, e.currentTarget.dataset.id);
@@ -151,6 +152,7 @@ function App() {
         })
       );
     }
+
     // first of all, create properties made of: name of event, id and if available, max. Tickets, IF the
   };
 
@@ -215,6 +217,28 @@ function App() {
     }
   };
 
+  function handleResetClick(
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) {
+    let button = e.target as HTMLButtonElement;
+    let id = button.dataset.id;
+    console.log("removing the number of tickets"); // WHYYYYYY?!
+    let resetProduct = shoppingCart.find((product) => product.id === id);
+    if (resetProduct) {
+      resetProduct.numOfReservedTickets = 0;
+      resetProduct.maxReached = false;
+      let array = [
+        ...shoppingCart.filter(
+          (product) => product.id !== e.currentTarget.dataset.id
+        ),
+        resetProduct,
+      ];
+      if (shoppingCart !== undefined)
+        setShoppingCart(array as SetStateAction<ShoppingCart[]>);
+    } else {
+      console.log("doesn't exist");
+    }
+  }
   return (
     <BrowserRouter>
       <Routes>
@@ -244,6 +268,7 @@ function App() {
               onDecrementClick={onDecrementClick}
               onIncrementClick={OnIncrementClick}
               onRemoveClick={onRemoveClick}
+              onHandleResetClick={handleResetClick}
             />
           }
         />
