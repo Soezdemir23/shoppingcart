@@ -40,13 +40,13 @@ export default function HomePage(props: {
         <nav className="hidden xl:py-4 xl:bg-blue-600 xl:flex xl:justify-center">
           <ul className="flex gap-5 relative top-3">
             <li className=" text-5xl text-white cursor-pointer active:text-orange-400">
-              <Link to="/">Home</Link>
+              <Link to="/shoppingcart">Home</Link>
             </li>
             <li className="text-5xl text-white cursor-pointer active:text-orange-400">
-              <Link to="/products">Products</Link>
+              <Link to="/shoppingcart/products">Products</Link>
             </li>
             <li className="text-5xl text-white cursor-pointer active:text-orange-400">
-              <Link to="/shopping-cart">Shopping Cart</Link>
+              <Link to="/shoppingcart/shopping-cart">Shopping Cart</Link>
             </li>
           </ul>
         </nav>
@@ -101,7 +101,7 @@ export default function HomePage(props: {
                     Buy 1 ticket immediately
                   </button>
                 )}
-                <Link to={`/products/${event.id}`}>
+                <Link to={`shopping/products/${event.id}`}>
                   <button className="px-2 py-1 bg-blue-600 text-white rounded-md">
                     Details
                   </button>

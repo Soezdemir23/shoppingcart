@@ -73,17 +73,17 @@ export default function Header(props: {
         <nav className="hidden lg:block xl:hidden">
           <ul className="flex gap-5 relative top-3 ">
             <li className=" text-3xl text-white cursor-pointer active:text-orange-400">
-              <Link to="/" onClick={drawerToggle}>
+              <Link to="/shoppingcart" onClick={drawerToggle}>
                 Home
               </Link>
             </li>
             <li className="text-3xl text-white cursor-pointer active:text-orange-400">
-              <Link to="/products" onClick={drawerToggle}>
+              <Link to="/shoppingcart/products" onClick={drawerToggle}>
                 Products
               </Link>
             </li>
             <li className="text-3xl text-white cursor-pointer active:text-orange-400">
-              <Link to="/shopping-cart" onClick={drawerToggle}>
+              <Link to="/shoppingcart/shopping-cart" onClick={drawerToggle}>
                 Shopping Cart
               </Link>
             </li>
@@ -109,17 +109,17 @@ export default function Header(props: {
 
         <ul className="relative bottom-2 flex flex-col items-center gap-10 pt-5">
           <li className="px-14 border-b-2 border-b-gray-400 cursor-pointer hover:border-b-blue-400">
-            <Link to="/" onClick={drawerToggle}>
+            <Link to="/shoppingcart" onClick={drawerToggle}>
               Home
             </Link>
           </li>
           <li className="px-12 border-b-2 border-b-gray-400 cursor-pointer hover:border-b-blue-400">
-            <Link to="/products" onClick={drawerToggle}>
+            <Link to="/shoppingcart/products" onClick={drawerToggle}>
               Products
             </Link>
           </li>
           <li className="px-7 border-b-2 border-b-gray-400 cursor-pointer hover:border-b-blue-400">
-            <Link to="/shopping-cart" onClick={drawerToggle}>
+            <Link to="/shoppingcart/shopping-cart" onClick={drawerToggle}>
               Shopping Cart
             </Link>
           </li>

@@ -246,7 +246,7 @@ function App() {
         <Route path="*" element={<NotFound />} />
         {/*Homepage, where the stuff is being presented*/}
         <Route
-          path="/"
+          path="/shoppingcart"
           element={
             <HomePage
               feed={feed}
@@ -260,7 +260,7 @@ function App() {
         />
         {/*Page for items. Try to make a switch out of it.*/}
         <Route
-          path="/products/:id"
+          path="/shoppingcart/products/:id"
           element={
             <Product
               feed={feed}
@@ -275,7 +275,7 @@ function App() {
         />
         {/*shopping thing */}
         <Route
-          path="/shopping-cart"
+          path="/shoppingcart/shopping-cart"
           element={
             <ShoppingPage
               onIncrementClick={OnIncrementClick}
