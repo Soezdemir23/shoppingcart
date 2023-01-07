@@ -40,50 +40,53 @@ function App() {
   const handleBuySubmission = (e: React.FormEvent<HTMLFormElement>) => {
     const select = e.currentTarget.elements.item(0) as HTMLSelectElement;
     const value = select.options[select.selectedIndex];
-
-    const product = shoppingCart.filter(
-      (product) => product.id === e.currentTarget.dataset.id
-    )[0];
-    // product exists, truthy value, filter away the stuff and the n put
-    if (product) {
-      product.numOfReservedTickets = parseInt(value.value);
-      setShoppingCart([
-        ...shoppingCart.filter(
-          (product) => product.id !== e.currentTarget.dataset.id
-        ),
-        product,
-      ]);
-      // product doesn't exist inside the shoppingCart array state
-    } else {
-      let newProduct = feed?.events.filter(
-        (event) => event.id === e.currentTarget.dataset.id
+    console.log(value.value);
+    if (value.value !== "check") {
+      const product = shoppingCart.filter(
+        (product) => product.id === e.currentTarget.dataset.id
       )[0];
-
-      const name = newProduct?.name;
-      const id = newProduct?.id;
-      let maxTickets: number = 0;
-      let cartImage = newProduct?.images.filter((image) => image.width < 400)[0]
-        .url;
-      if (newProduct?.ticketLimit !== undefined) {
-        const regex = /\d+/;
-        const matches = newProduct.ticketLimit.info?.match(regex);
-        let result = "";
-        matches?.forEach((res) => (result += res));
-        maxTickets = parseInt(result);
+      // product exists, truthy value, filter away the stuff and the n put
+      if (product) {
+        product.numOfReservedTickets = parseInt(value.value);
+        setShoppingCart([
+          ...shoppingCart.filter(
+            (product) => product.id !== e.currentTarget.dataset.id
+          ),
+          product,
+        ]);
+        // product doesn't exist inside the shoppingCart array state
       } else {
-        maxTickets = 99;
+        let newProduct = feed?.events.filter(
+          (event) => event.id === e.currentTarget.dataset.id
+        )[0];
+
+        const name = newProduct?.name;
+        const id = newProduct?.id;
+        let maxTickets: number = 0;
+        let cartImage = newProduct?.images.filter(
+          (image) => image.width < 400
+        )[0].url;
+        if (newProduct?.ticketLimit !== undefined) {
+          const regex = /\d+/;
+          const matches = newProduct.ticketLimit.info?.match(regex);
+          let result = "";
+          matches?.forEach((res) => (result += res));
+          maxTickets = parseInt(result);
+        } else {
+          maxTickets = 99;
+        }
+        let object: ShoppingCart = {
+          name: name,
+          id: id,
+          maxTickets: maxTickets,
+          numOfReservedTickets: parseInt(value.value),
+          maxReached: false,
+          image: cartImage,
+        };
+        if (object.maxTickets === object.numOfReservedTickets)
+          object.maxReached = true;
+        setShoppingCart([...shoppingCart, object]);
       }
-      let object: ShoppingCart = {
-        name: name,
-        id: id,
-        maxTickets: maxTickets,
-        numOfReservedTickets: parseInt(value.value),
-        maxReached: false,
-        image: cartImage,
-      };
-      if (object.maxTickets === object.numOfReservedTickets)
-        object.maxReached = true;
-      setShoppingCart([...shoppingCart, object]);
     }
     console.log(value, e.currentTarget.dataset.id);
   };
@@ -222,15 +225,13 @@ function App() {
   ) {
     let button = e.target as HTMLButtonElement;
     let id = button.dataset.id;
-    console.log("removing the number of tickets"); // WHYYYYYY?!
+    console.log("removing the number of tickets", id); // WHYYYYYY?!
     let resetProduct = shoppingCart.find((product) => product.id === id);
     if (resetProduct) {
       resetProduct.numOfReservedTickets = 0;
       resetProduct.maxReached = false;
       let array = [
-        ...shoppingCart.filter(
-          (product) => product.id !== e.currentTarget.dataset.id
-        ),
+        ...shoppingCart.filter((product) => product.id !== id),
         resetProduct,
       ];
       if (shoppingCart !== undefined)
