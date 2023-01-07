@@ -5,7 +5,7 @@ export default function NotFound() {
     <>
       <main>
         <h1>WHOOPS! Wrong page :^)</h1>
-        <Link to="/">Turn back here</Link>
+        <Link to="/shoppingcart/">Turn back here</Link>
       </main>
     </>
   );
