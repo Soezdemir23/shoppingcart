@@ -53,7 +53,7 @@ export default function Product(props: {
       maximumTicketRef.current = parseInt(result);
       setCurrentTickets(maximumTicketRef.current);
     }
-  }, [maxTickets]);
+  }, [maxTickets, id]);
   const selectTicks: ReactNode[] = [];
   selectTicks.push(
     <option key={"check"} value={"check"}>
