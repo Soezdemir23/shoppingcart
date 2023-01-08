@@ -98,7 +98,7 @@ export default function Product(props: {
         onDecrementClick={onDecrementClick}
         onRemoveClick={onRemoveClick}
       />
-      <section>
+      <section className="pb-24">
         <article>
           <h3 className="text-center">{product?.name}</h3>
           <div className="flex flex-col items-center gap-4">
