@@ -118,8 +118,12 @@ function App() {
       const name = product?.name;
       const id = product?.id;
       let maxTickets: number = 0;
-      let cartImage = product?.images.filter((image) => image.width < 400)[0]
-        .url;
+      let cartImage = product?.images.sort(
+        (a, b) => a.height - b.height && a.width - b.width
+      )[product.images.length - 1].url;
+      console.log(
+        product?.images.sort((a, b) => a.height - b.height && a.width - b.width)
+      );
       if (product?.ticketLimit !== undefined) {
         const regex = /\d+/;
         const matches = product.ticketLimit.info?.match(regex);
@@ -162,8 +166,10 @@ function App() {
   const OnIncrementClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
+    console.log("incremented");
     setShoppingCart(
       shoppingCart.map((product) => {
+        console.log("i exist ", e.currentTarget.dataset.id);
         if (product.id === e.currentTarget.dataset.id) {
           console.log(product);
           if (product.maxReached === true) {
@@ -171,7 +177,6 @@ function App() {
             return product;
           } else if (product.maxTickets === product.numOfReservedTickets) {
             console.log("Increment: maxTickets");
-
             product.maxReached = true;
             return product;
           }
@@ -209,7 +214,14 @@ function App() {
   const onRemoveClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    if (e.currentTarget.textContent === "Remove") {
+    console.log(e.currentTarget.title);
+
+    if (
+      e.currentTarget.textContent === "Remove" ||
+      e.currentTarget.title === "remove-shoppingpage"
+    ) {
+      console.log("You clicked here");
+      console.log("id,", e.currentTarget.dataset.id);
       setShoppingCart(
         shoppingCart.filter(
           (product) => product.id !== e.currentTarget.dataset.id
