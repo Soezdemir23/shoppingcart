@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import Footer from "../Footer";
 import Header from "../Header";
-import { AllProps, EmbeddedClass, ShoppingCart } from "../eventsInterface";
+import { EmbeddedClass, ShoppingCart } from "../eventsInterface";
 export default function HomePage(props: {
   feed: EmbeddedClass | undefined;
   onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
@@ -36,15 +36,15 @@ export default function HomePage(props: {
         onDecrementClick={onDecrementClick}
         onRemoveClick={(e) => onRemoveClick(e)}
       />
-      <main>
+      <main className="pb-20">
         <nav className="hidden xl:py-4 xl:bg-blue-600 xl:flex xl:justify-center">
           <ul className="flex gap-5 relative top-3">
             <li className=" text-5xl text-white cursor-pointer active:text-orange-400">
               <Link to="/">Home</Link>
             </li>
-            <li className="text-5xl text-white cursor-pointer active:text-orange-400">
+            {/*<li className="text-5xl text-white cursor-pointer active:text-orange-400">
               <Link to="/products">Products</Link>
-            </li>
+  </li>*/}
             <li className="text-5xl text-white cursor-pointer active:text-orange-400">
               <Link to="/shopping-cart">Shopping Cart</Link>
             </li>
