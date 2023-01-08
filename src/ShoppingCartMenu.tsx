@@ -67,7 +67,7 @@ export default function ShoppingCartMenu(props: {
                 title="Event Picture"
               ></img>
               <input
-                className="lg:relative lg:left-52 lg:bottom-28 "
+                className="lg:relative lg:left-52 lg:bottom-20 "
                 title="Input Numbers"
                 type={"number"}
                 min={1}
@@ -75,7 +75,7 @@ export default function ShoppingCartMenu(props: {
                 value={product.numOfReservedTickets}
                 placeholder="Enter the number of products"
               />
-              <div className="lg:relative lg:left-52 lg:bottom-20">
+              <div className="lg:relative lg:left-52 lg:bottom-16">
                 <button
                   data-id={product.id}
                   onClick={(e) => incrementClick(e)}
