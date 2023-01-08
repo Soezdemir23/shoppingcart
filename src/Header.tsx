@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { AllProps, ShoppingCart } from "./eventsInterface";
+import { ShoppingCart } from "./eventsInterface";
 import ShoppingCartMenu from "./ShoppingCartMenu";
 
 import ShoppinCartImage from "./shopping_cart.svg";
@@ -77,11 +77,11 @@ export default function Header(props: {
                 Home
               </Link>
             </li>
-            <li className="text-3xl text-white cursor-pointer active:text-orange-400">
+            {/*}   <li className="text-3xl text-white cursor-pointer active:text-orange-400">
               <Link to="/products" onClick={drawerToggle}>
                 Products
               </Link>
-            </li>
+  </li> */}
             <li className="text-3xl text-white cursor-pointer active:text-orange-400">
               <Link to="/shopping-cart" onClick={drawerToggle}>
                 Shopping Cart
@@ -113,11 +113,11 @@ export default function Header(props: {
               Home
             </Link>
           </li>
-          <li className="px-12 border-b-2 border-b-gray-400 cursor-pointer hover:border-b-blue-400">
+          {/*          <li className="px-12 border-b-2 border-b-gray-400 cursor-pointer hover:border-b-blue-400">
             <Link to="/products" onClick={drawerToggle}>
-              Products
+              Products 
             </Link>
-          </li>
+      </li>*/}
           <li className="px-7 border-b-2 border-b-gray-400 cursor-pointer hover:border-b-blue-400">
             <Link to="/shopping-cart" onClick={drawerToggle}>
               Shopping Cart
