@@ -3,7 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import HomePage from "./HomePage";
 import Product from "./Product";
 import ShoppingPage from "./ShoppingPage";
-import React, { SetStateAction, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { consumerKey } from "./env";
 import { EmbeddedClass, ShoppingCart, ValueClass } from "./eventsInterface";
 import NotFound from "./NotFound";
@@ -11,7 +11,8 @@ import NotFound from "./NotFound";
 function App() {
   const [feed, setFeed] = useState<EmbeddedClass | undefined>(undefined);
   const [shoppingCart, setShoppingCart] = useState<ShoppingCart[]>([]);
-
+  // in some products the accessibility with property ticketLimit is undefined, so I set a fallback value
+  const fallbackTicketLimit = 23;
   // I SWEAR last time I made a better looking async await utilization.
   // Insane
   useEffect(() => {
@@ -24,8 +25,9 @@ function App() {
   async function fetchFeed() {
     try {
       const response = await fetch(
-        "https://app.ticketmaster.com/discovery/v2/events.json?apikey=" +
-          consumerKey,
+        "https://app.ticketmaster.com/discovery/v2/events?apikey=" +
+          consumerKey +
+          "&keyword=baseball&locale=*",
         { mode: "cors" }
       );
       const data: Promise<ValueClass> = await response.json();
@@ -36,18 +38,25 @@ function App() {
       );
     }
   }
-
+  // need to fix this too due to api breaking changes
   const handleBuySubmission = (e: React.FormEvent<HTMLFormElement>) => {
     const select = e.currentTarget.elements.item(0) as HTMLSelectElement;
     const value = select.options[select.selectedIndex];
-    console.log(value.value);
-    if (value.value !== "check") {
+    if (value.value !== "select Tickets") {
       const product = shoppingCart.filter(
         (product) => product.id === e.currentTarget.dataset.id
       )[0];
       // product exists, truthy value, filter away the stuff and the n put
       if (product) {
-        product.numOfReservedTickets = parseInt(value.value);
+        if (
+          product.numOfReservedTickets + parseInt(value.value) >
+          product.maxTickets!
+        ) {
+          product.maxReached = true;
+          product.numOfReservedTickets = product.maxTickets!;
+        } else {
+          product.numOfReservedTickets += parseInt(value.value);
+        }
         setShoppingCart([
           ...shoppingCart.filter(
             (product) => product.id !== e.currentTarget.dataset.id
@@ -59,26 +68,19 @@ function App() {
         let newProduct = feed?.events.filter(
           (event) => event.id === e.currentTarget.dataset.id
         )[0];
-
-        const name = newProduct?.name;
-        const id = newProduct?.id;
-        let maxTickets: number = 0;
+        if (newProduct === undefined)
+          throw new Error("newProduct is undefined");
         let cartImage = newProduct?.images.filter(
           (image) => image.width < 400
         )[0].url;
-        if (newProduct?.ticketLimit !== undefined) {
-          const regex = /\d+/;
-          const matches = newProduct.ticketLimit.info?.match(regex);
-          let result = "";
-          matches?.forEach((res) => (result += res));
-          maxTickets = parseInt(result);
-        } else {
-          maxTickets = 99;
-        }
+
         let object: ShoppingCart = {
-          name: name,
-          id: id,
-          maxTickets: maxTickets,
+          name: newProduct.name,
+          id: newProduct.id,
+          maxTickets:
+            newProduct.accessibility === undefined
+              ? fallbackTicketLimit
+              : newProduct.accessibility.ticketLimit,
           numOfReservedTickets: parseInt(value.value),
           maxReached: false,
           image: cartImage,
@@ -88,7 +90,6 @@ function App() {
         setShoppingCart([...shoppingCart, object]);
       }
     }
-    console.log(value, e.currentTarget.dataset.id);
   };
 
   // we buy one ticket by clicking here, then we need to create the first shoppingList object here or
@@ -98,45 +99,22 @@ function App() {
     let product = feed?.events.filter(
       (event) => event.id === e.currentTarget.dataset.key
     )[0];
-    // does that product already exist in the state shoppingCart?
-    // if it does, then check if the number of tickets is inequal to the currently reserved tickets
-    //  if it is equal, then the buy one button needs to be shaking and be red, "Max. Tickets reached".
-    //  if not, then increment the currentTickets property by one each time the user clicks
-    // if not, create a new object that has
-    //  name of the event
-    //  id of the event
-    //  max Tickets or 99 Tickets as max Tickets
-    //  currentTickets at 1
-    // set the update into the shoppingcart state array
-
-    // new entry
     if (
       shoppingCart?.filter(
         (productInCart) => productInCart.id === product?.id
       )[0] === undefined
     ) {
-      const name = product?.name;
-      const id = product?.id;
-      let maxTickets: number = 0;
       let cartImage = product?.images.sort(
         (a, b) => a.height - b.height && a.width - b.width
       )[product.images.length - 1].url;
-      console.log(
-        product?.images.sort((a, b) => a.height - b.height && a.width - b.width)
-      );
-      if (product?.ticketLimit !== undefined) {
-        const regex = /\d+/;
-        const matches = product.ticketLimit.info?.match(regex);
-        let result = "";
-        matches?.forEach((res) => (result += res));
-        maxTickets = parseInt(result);
-      } else {
-        maxTickets = 99;
-      }
+
       let object: ShoppingCart = {
-        name: name,
-        id: id,
-        maxTickets: maxTickets,
+        name: product?.name,
+        id: product?.id,
+        maxTickets:
+          product?.accessibility === undefined
+            ? fallbackTicketLimit
+            : product?.accessibility.ticketLimit,
         numOfReservedTickets: 1,
         maxReached: false,
         image: cartImage,
@@ -166,17 +144,12 @@ function App() {
   const OnIncrementClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    console.log("incremented");
     setShoppingCart(
       shoppingCart.map((product) => {
-        console.log("i exist ", e.currentTarget.dataset.id);
         if (product.id === e.currentTarget.dataset.id) {
-          console.log(product);
           if (product.maxReached === true) {
-            console.log("Increment: maxReached");
             return product;
           } else if (product.maxTickets === product.numOfReservedTickets) {
-            console.log("Increment: maxTickets");
             product.maxReached = true;
             return product;
           }
@@ -193,15 +166,11 @@ function App() {
     setShoppingCart(
       shoppingCart.map((product) => {
         if (product.id === e.currentTarget.dataset.id) {
-          console.log(product);
           if (product.maxReached === true) {
-            console.log("product maxReached");
             product.maxReached = false;
             return product;
           }
           if (product.numOfReservedTickets === 1) {
-            console.log("numberOfReserved");
-
             return product;
           }
           product.numOfReservedTickets--;
@@ -214,14 +183,10 @@ function App() {
   const onRemoveClick = (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ) => {
-    console.log(e.currentTarget.title);
-
     if (
       e.currentTarget.textContent === "Remove" ||
       e.currentTarget.title === "remove-shoppingpage"
     ) {
-      console.log("You clicked here");
-      console.log("id,", e.currentTarget.dataset.id);
       setShoppingCart(
         shoppingCart.filter(
           (product) => product.id !== e.currentTarget.dataset.id
@@ -237,20 +202,7 @@ function App() {
   ) {
     let button = e.target as HTMLButtonElement;
     let id = button.dataset.id;
-    console.log("removing the number of tickets", id); // WHYYYYYY?!
-    let resetProduct = shoppingCart.find((product) => product.id === id);
-    if (resetProduct) {
-      resetProduct.numOfReservedTickets = 0;
-      resetProduct.maxReached = false;
-      let array = [
-        ...shoppingCart.filter((product) => product.id !== id),
-        resetProduct,
-      ];
-      if (shoppingCart !== undefined)
-        setShoppingCart(array as SetStateAction<ShoppingCart[]>);
-    } else {
-      console.log("doesn't exist");
-    }
+    setShoppingCart(shoppingCart.filter((product) => product.id !== id));
   }
   return (
     <BrowserRouter basename="/shoppingcart">
@@ -275,6 +227,7 @@ function App() {
           path="/products/:id"
           element={
             <Product
+              fallbackTicketLimit={fallbackTicketLimit}
               feed={feed}
               onSubmit={handleBuySubmission}
               shoppingCart={shoppingCart}

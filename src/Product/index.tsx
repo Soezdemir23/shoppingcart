@@ -1,13 +1,15 @@
 import React, { ReactNode, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
-import { EmbeddedClass, ShoppingCart } from "../eventsInterface";
+import { EmbeddedClass, Event, ShoppingCart } from "../eventsInterface";
 import Footer from "../Footer";
 import Header from "../Header";
+import SelectTickets from "./SelectTickets";
 // most props need to be passed higher. get lifted higher than it is atm.
 // why?
 // shoppingCart needs to be handled at the App.tsx level, then sent down to the rest of the products pages. Otherwise it just doesn't work.
 // so first let's go through the code and see what doesn't work or is confusing.
 export default function Product(props: {
+  fallbackTicketLimit: number;
   shoppingCart: ShoppingCart[];
   onSubmit: (event: React.FormEvent<HTMLFormElement>) => void;
   feed: EmbeddedClass | undefined;
@@ -23,6 +25,7 @@ export default function Product(props: {
   ) => void;
 }) {
   const {
+    fallbackTicketLimit,
     shoppingCart,
     onSubmit,
     feed,
@@ -31,14 +34,18 @@ export default function Product(props: {
     onRemoveClick,
     onHandleResetClick,
   } = props;
-
+  // so basically, when the user clicks at the product page, due to the empty shoppingCart array, the page breaks.
+  // While the shoppingCart is empty, the product page should be rendered with the product's necessary information.
+  const [isLoading, setIsLoading] = useState(true);
   const { id } = useParams();
+  const [product, setProduct] = useState<Event | undefined>(undefined);
   // we should lift changes for this back up to the app.tsx
   const cartProduct = shoppingCart.find((prod) => prod.id === id);
-  // we need this to populate the page
-  const product = feed?.events.find((prod) => prod.id === id);
-  const maxTickets: string | undefined =
-    product?.ticketLimit === undefined ? "99" : product.ticketLimit.info;
+
+  const maxTickets: number =
+    product?.accessibility === undefined
+      ? 99
+      : product.accessibility.ticketLimit;
 
   const maximumTicketRef = useRef(0);
   // needs to be put higher compoent
@@ -46,36 +53,15 @@ export default function Product(props: {
   // with the product we can
   useEffect(() => {
     if (maxTickets !== undefined) {
-      const regex = /\d+/;
-      const matches = maxTickets?.match(regex);
-      let result = "";
-      matches?.forEach((res) => (result += res));
-      maximumTicketRef.current = parseInt(result);
       setCurrentTickets(maximumTicketRef.current);
     }
-  }, [maxTickets, id]);
-  const selectTicks: ReactNode[] = [];
-  selectTicks.push(
-    <option key={"check"} value={"check"}>
-      check
-    </option>
-  );
-  // either use cartProduct.reservcedTickets or something or use maximumTicketRef,current
 
-  for (
-    let i = 0;
-    i <
-    (cartProduct?.numOfReservedTickets === undefined
-      ? maximumTicketRef.current
-      : Math.abs(cartProduct.numOfReservedTickets - cartProduct.maxTickets));
-    i++
-  ) {
-    selectTicks.push(
-      <option key={i + 1} value={i + 1}>
-        {i + 1} {i + 1 > 1 ? "Tickets" : "Ticket"}
-      </option>
-    );
-  }
+    if (product === undefined) {
+      const product = feed?.events.find((event) => event.id === id);
+      setProduct(product);
+      setIsLoading(false);
+    }
+  }, [maxTickets, product, feed, id]);
 
   let teamOnePic = product?._embedded.attractions[0].images.filter(
     (img) => img.width === 2048 && img.ratio === "16_9"
@@ -303,9 +289,15 @@ export default function Product(props: {
             may only buy max.{" "}
             <span>
               {cartProduct === undefined
-                ? maximumTicketRef.current
+                ? product?.accessibility === undefined
+                  ? fallbackTicketLimit
+                  : product?.accessibility.ticketLimit
                 : Math.abs(
-                    cartProduct.numOfReservedTickets - cartProduct.maxTickets
+                    cartProduct.numOfReservedTickets -
+                      (cartProduct.maxTickets === undefined
+                        ? 0
+                        : cartProduct.numOfReservedTickets -
+                          cartProduct.maxTickets)
                   )}
             </span>
             . Numbers of tickets change based on supply and demand.
@@ -324,7 +316,11 @@ export default function Product(props: {
             }}
           >
             <select name="tickets" id="selection">
-              {selectTicks}
+              <SelectTickets
+                cartProduct={cartProduct}
+                product={product}
+                fallbackTicketLimit={fallbackTicketLimit}
+              />
             </select>
             <button
               type={"submit"}
@@ -338,7 +334,6 @@ export default function Product(props: {
               onClick={(e) => {
                 e.preventDefault();
                 setTimeout(() => {
-                  console.log();
                   handleResetClick(e);
                 }, 1000);
               }}
