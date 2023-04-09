@@ -58,7 +58,11 @@ export default function HomePage(props: {
             >
               {/* title card */}
               <div className="flex flex-col justify-center content-center">
-                <h6 className="text-center">{event.name}</h6>
+                <h6 className="text-center font-medium">{event.name}</h6>
+                <span className="text-center">
+                  {event._embedded.venues[0].name} in{" "}
+                  {event.dates.start.localDate} at {event.dates.start.localTime}
+                </span>
                 <img
                   className="center"
                   src={
