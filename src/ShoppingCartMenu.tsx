@@ -72,8 +72,12 @@ export default function ShoppingCartMenu(props: {
                 type={"number"}
                 min={1}
                 max={product.maxTickets}
-                value={product.numOfReservedTickets}
                 placeholder="Enter the number of products"
+                value={product.numOfReservedTickets.toString()}
+                onChange={(e) =>
+                  (e.currentTarget.defaultValue =
+                    product.numOfReservedTickets.toString())
+                }
               />
               <div className="lg:relative lg:left-52 lg:bottom-16">
                 <button
