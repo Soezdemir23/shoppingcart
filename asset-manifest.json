@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/shoppingcart/static/css/main.7a94f550.css",
-    "main.js": "/shoppingcart/static/js/main.5babae9e.js",
+    "main.css": "/shoppingcart/static/css/main.9b8d98c8.css",
+    "main.js": "/shoppingcart/static/js/main.aacc1150.js",
     "static/js/787.c337d5b1.chunk.js": "/shoppingcart/static/js/787.c337d5b1.chunk.js",
     "static/media/Jellee-Bold.ttf": "/shoppingcart/static/media/Jellee-Bold.f45509b22415af8e189a.ttf",
     "index.html": "/shoppingcart/index.html",
     "static/media/shopping_cart.svg": "/shoppingcart/static/media/shopping_cart.287e70bcb24b99bd6facad3ebbef68ea.svg",
     "static/media/delete.svg": "/shoppingcart/static/media/delete.3270f2c93c8c138fa6cc69fbd18f985e.svg",
-    "main.7a94f550.css.map": "/shoppingcart/static/css/main.7a94f550.css.map",
-    "main.5babae9e.js.map": "/shoppingcart/static/js/main.5babae9e.js.map",
+    "main.9b8d98c8.css.map": "/shoppingcart/static/css/main.9b8d98c8.css.map",
+    "main.aacc1150.js.map": "/shoppingcart/static/js/main.aacc1150.js.map",
     "787.c337d5b1.chunk.js.map": "/shoppingcart/static/js/787.c337d5b1.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.7a94f550.css",
-    "static/js/main.5babae9e.js"
+    "static/css/main.9b8d98c8.css",
+    "static/js/main.aacc1150.js"
   ]
 }
