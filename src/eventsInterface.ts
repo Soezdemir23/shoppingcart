@@ -200,12 +200,24 @@ export interface AllProps {
   onClick?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void;
   shoppingCart: ShoppingCart[];
 }
-
+// Fresh created object, not possible to be anything undefined inside as it is created.
+/**
+ * This is the ShoppingCart interface that is necessary for the shoppingCart and the shoppingCartMenu and the product pages
+ *
+ * @interface ShoppingCart
+ * @property {string} name - The name of the product
+ * @property {string} id - The id of the product
+ * @property {string | undefined} image - The image of the product
+ * @property {number} maxTickets - The max amount of tickets that can be bought
+ * @property {number} numOfReservedTickets - The amount of tickets that are reserved
+ * @property {boolean} maxReached - If the max amount of tickets is reached
+ *
+ */
 export interface ShoppingCart {
-  name: string | undefined;
-  id: string | undefined;
+  name: string;
+  id: string;
   image: string | undefined;
-  maxTickets: number | undefined;
+  maxTickets: number;
   numOfReservedTickets: number;
   maxReached: boolean;
 }
