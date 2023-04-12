@@ -109,8 +109,8 @@ function App() {
       )[product.images.length - 1].url;
 
       let object: ShoppingCart = {
-        name: product?.name,
-        id: product?.id,
+        name: product!.name,
+        id: product!.id,
         maxTickets:
           product?.accessibility === undefined
             ? fallbackTicketLimit
