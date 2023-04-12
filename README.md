@@ -22,4 +22,4 @@ Focusing on the shoppingcart and the interactivity between the shopping cart and
   + some properties were missing on the same objects, necessitation fallbacks and avoid magic values.
 + Header is not really responsive.
   + First suspicion might be that due to the nature of CRA we used [not have the necessary compatibility](https://tailwindcss.com/docs/guides/create-react-app).
-  + Next reason might be due to simply using relative and absolute properties nillywilly to the header and require more meticulous care (WIP)
+  + Next reason might be due to simply using relative and absolute properties nillywilly to the header and require more meticulous care (WIP).
