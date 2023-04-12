@@ -1,4 +1,4 @@
-import React, { ReactNode, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { EmbeddedClass, Event, ShoppingCart } from "../eventsInterface";
 import Footer from "../Footer";
@@ -36,7 +36,6 @@ export default function Product(props: {
   } = props;
   // so basically, when the user clicks at the product page, due to the empty shoppingCart array, the page breaks.
   // While the shoppingCart is empty, the product page should be rendered with the product's necessary information.
-  const [isLoading, setIsLoading] = useState(true);
   const { id } = useParams();
   const [product, setProduct] = useState<Event | undefined>(undefined);
   // we should lift changes for this back up to the app.tsx
@@ -59,7 +58,6 @@ export default function Product(props: {
     if (product === undefined) {
       const product = feed?.events.find((event) => event.id === id);
       setProduct(product);
-      setIsLoading(false);
     }
   }, [maxTickets, product, feed, id]);
 
@@ -288,17 +286,15 @@ export default function Product(props: {
             Please be <span className="text-red-600 underline">aware</span>: You
             may only buy max.{" "}
             <span>
-              {cartProduct === undefined
-                ? product?.accessibility === undefined
-                  ? fallbackTicketLimit
-                  : product?.accessibility.ticketLimit
-                : Math.abs(
-                    cartProduct.numOfReservedTickets -
-                      (cartProduct.maxTickets === undefined
-                        ? 0
-                        : cartProduct.numOfReservedTickets -
-                          cartProduct.maxTickets)
-                  )}
+              {/* when the cartProduct is not empty, show me the absolue value of  numOfResevedTickets - maxTickets or something. 
+              Then check product being undefined, if it is, use ticketFallback, then the shoppingCart object is populated and pushed to the */}
+              {cartProduct !== undefined
+                ? Math.abs(
+                    cartProduct.numOfReservedTickets - cartProduct.maxTickets
+                  )
+                : product?.accessibility === undefined
+                ? fallbackTicketLimit
+                : product?.accessibility.ticketLimit}
             </span>
             . Numbers of tickets change based on supply and demand.
           </p>
