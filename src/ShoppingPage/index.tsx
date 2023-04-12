@@ -24,7 +24,7 @@ export default function ShoppingPage(props: {
         onDecrementClick={onDecrementClick}
         onRemoveClick={(e) => onRemoveClick(e)}
       />
-      <section className="flex flex-col items-center justify-center grow pb-24">
+      <section className="flex flex-col items-center justify-center grow pb-20 pt-14 lg:pt-20 xl:pt-28">
         <h1 className="text-center">Overview of reserved products</h1>
         {shoppingCart.length > 0 ? (
           shoppingCart.map((product) => (

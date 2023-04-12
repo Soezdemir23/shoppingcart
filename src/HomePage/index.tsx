@@ -36,20 +36,7 @@ export default function HomePage(props: {
         onDecrementClick={onDecrementClick}
         onRemoveClick={(e) => onRemoveClick(e)}
       />
-      <main className="pb-20">
-        <nav className="hidden xl:py-4 xl:bg-blue-600 xl:flex xl:justify-center">
-          <ul className="flex gap-5 relative top-3">
-            <li className=" text-5xl text-white cursor-pointer active:text-orange-400">
-              <Link to="/">Home</Link>
-            </li>
-            {/*<li className="text-5xl text-white cursor-pointer active:text-orange-400">
-              <Link to="/products">Products</Link>
-  </li>*/}
-            <li className="text-5xl text-white cursor-pointer active:text-orange-400">
-              <Link to="/shopping-cart">Shopping Cart</Link>
-            </li>
-          </ul>
-        </nav>
+      <main className="pb-20 pt-14 lg:pt-20 xl:pt-28">
         <section className="flex flex-col gap-4 xl:grid xl:grid-cols-2">
           {feed?.events.map((event) => (
             <article

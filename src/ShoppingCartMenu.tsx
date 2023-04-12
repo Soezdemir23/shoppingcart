@@ -40,17 +40,16 @@ export default function ShoppingCartMenu(props: {
       ref={menuRef}
       className={
         (popUpDrawer === true ? "hidden" : "") +
-        " max-h-[35rem] bg-white p-1 rounded-lg top-14 right-1 z-10 fixed scroll overflow-auto border-2 md:top-20 lg:w-[30rem]"
+        " max-h-[35rem] bg-white p-1 rounded-lg top-14 right-1 z-10 fixed scroll overflow-auto border-2 md:top-[7%] lg:w-[30rem] lg:top-[9.5%] xl:top-[13.5%]"
       }
     >
-      <span
+      {/*   <span
         className={
-          (shoppingCart.length > 0 ? "left-[20rem] " : "left-[20rem] ") +
-          " z-10 h-4 w-4 block top-[3rem] border-l-2 border-t-2 fixed rotate-45 bg-white sm:left-[45.5rem] md:w-8 md:h-8 md:left-[60.5rem] md:top-16  lg:left-[86rem]"
+          "z-60 h-4 w-4 block border-l-2 border-t-2 relative rotate-45 bg-amber-600 left-[84%] bottom-5"
         }
       >
         {" "}
-      </span>
+      </span>*/}
       <h4 className="text-center lg:text-3xl">ShoppingCart:</h4>
 
       <div title="children" className="px-2 pb-2 border-b-4 ">
@@ -105,7 +104,12 @@ export default function ShoppingCartMenu(props: {
             </div>
           ))
         ) : (
-          <p>Your shopping cart is empty</p>
+          <p
+            className="lg:text-xl text-center
+          "
+          >
+            Your shopping cart is empty
+          </p>
         )}
       </div>
 

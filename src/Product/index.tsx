@@ -82,7 +82,7 @@ export default function Product(props: {
         onDecrementClick={onDecrementClick}
         onRemoveClick={onRemoveClick}
       />
-      <section className="pb-24">
+      <section className="pb-2 pt-14  lg:pt-20 xl:pt-28 ">
         <article>
           <h3 className="text-center">{product?.name}</h3>
           <div className="flex flex-col items-center gap-4">
